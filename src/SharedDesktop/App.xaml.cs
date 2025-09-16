@@ -11,5 +11,11 @@
         {
             return new Window(new AppShell());
         }
+
+        protected override void OnStart()
+        {
+            base.OnStart();
+            Task.Run(async () => await Program.Main(null));
+        }
     }
 }
