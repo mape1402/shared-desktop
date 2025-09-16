@@ -1,6 +1,4 @@
-﻿using System.Runtime.Versioning;
-
-namespace SharedDesktop
+﻿namespace SharedDesktop.Client
 {
     public partial class App : Application
     {
@@ -9,15 +7,9 @@ namespace SharedDesktop
             InitializeComponent();
         }
 
-        [SupportedOSPlatform("windows10.0.17763.0")]
         protected override Window CreateWindow(IActivationState activationState)
         {
             return new Window(new AppShell());
-        }
-
-        protected override void OnStart()
-        {
-            Task.Run(async () => await Program.Main(null));
         }
     }
 }

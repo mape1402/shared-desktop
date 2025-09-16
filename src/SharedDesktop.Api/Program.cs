@@ -30,7 +30,7 @@ public static class Program
 
         app.UseAuthorization();
 
-        app.MapHub<ClipboardHub>("/realtime/clipboard");
+        app.MapHub<SynchronizationHub>("/realtime/synchronization");
 
         app.MapGet("/", () => "Hello World!");
 

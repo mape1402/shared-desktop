@@ -1,6 +1,6 @@
 ﻿namespace SharedDesktop.Api.Hubs
 {
-    public interface IClipboardChannel
+    public interface ISynchronizationChannel
     {
         Task ReceiveClipboardAsync(string content);
     }

@@ -2,9 +2,9 @@
 
 namespace SharedDesktop.Api.Hubs
 {
-    public class ClipboardHub : Hub<IClipboardChannel>
+    public class SynchronizationHub : Hub<ISynchronizationChannel>
     {
-        public Task SendAsync(string content)
+        public Task SendClipboardAsync(string content)
         {
             return Clients.Others.ReceiveClipboardAsync(content);
         }
