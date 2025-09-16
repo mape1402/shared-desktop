@@ -1,5 +1,5 @@
 
-using System.Threading.Tasks;
+using SharedDesktop.Api.Hubs;
 
 public static class Program
 {
@@ -14,6 +14,9 @@ public static class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
+        builder.Services.AddSignalR();
+        builder.Services.AddSignalRCore();
+
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.
@@ -26,6 +29,8 @@ public static class Program
         app.UseHttpsRedirection();
 
         app.UseAuthorization();
+
+        app.MapHub<ClipboardHub>("/realtime/clipboard");
 
         app.MapGet("/", () => "Hello World!");
 
