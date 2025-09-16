@@ -1,5 +1,7 @@
 
+using SharedDesktop.Api;
 using SharedDesktop.Api.Hubs;
+using SharedDesktop.Api.Services;
 
 public static class Program
 {
@@ -17,6 +19,9 @@ public static class Program
         builder.Services.AddSignalR();
         builder.Services.AddSignalRCore();
 
+        builder.Services.AddSingleton<INetworkService, NetworkService>();
+        builder.Services.AddHostedService<DnsBackgrounService>();
+
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.
@@ -32,10 +37,10 @@ public static class Program
 
         app.MapHub<SynchronizationHub>("/realtime/synchronization");
 
-        app.MapGet("/", () => "Hello World!");
+        app.MapGet("/ping", () => "Ok, let's go!");
 
         app.MapControllers();
 
-        await app.RunAsync("http://0.0.0.0:9001");
+        await app.RunAsync($"http://0.0.0.0:0");
     }
 }

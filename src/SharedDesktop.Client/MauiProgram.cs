@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.SignalR.Client;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
+using SharedDesktop.Client.Services.Discovery;
 using SharedDesktop.Client.Services.RealTime;
 
 namespace SharedDesktop.Client
@@ -20,16 +20,7 @@ namespace SharedDesktop.Client
             builder.Services.AddSingleton<MainPage>();
             builder.Services.AddSingleton<ViewModels.MainViewModel>();
 
-            builder.Services.AddSingleton(sp =>
-            {
-                var connection  = new HubConnectionBuilder()
-                    .WithUrl("http://192.168.68.101:9001/realtime/synchronization")
-                    .WithAutomaticReconnect()
-                    .Build();
-
-                return connection;
-            });
-
+            builder.Services.AddSingleton<IServiceDiscovery, ServiceDiscovery>();
             builder.Services.AddSingleton<ISignalRService, SignalRService>();
 
 #if DEBUG
