@@ -1,35 +1,125 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="SharedDesktop.Client.MainPage">
+             xmlns:viewModels="clr-namespace:SharedDesktop.Client.ViewModels"
+             x:Class="SharedDesktop.Client.MainPage"
+             x:DataType="viewModels:MainViewModel"
+             Title="Clipboard Synchronizer">
 
-    <ScrollView>
-        <VerticalStackLayout
-            Padding="30,0"
-            Spacing="25">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- Header Section -->
+        <StackLayout Grid.Row="0" Padding="30,20,30,10" Spacing="10">
             <Image
                 Source="dotnet_bot.png"
-                HeightRequest="185"
+                HeightRequest="100"
                 Aspect="AspectFit"
                 SemanticProperties.Description="dot net bot in a hovercraft number nine" />
 
             <Label
-                Text="Hello, World!"
+                Text="Clipboard Synchronizer"
                 Style="{StaticResource Headline}"
+                HorizontalOptions="Center"
                 SemanticProperties.HeadingLevel="Level1" />
 
             <Label
-                Text="Welcome to &#10;.NET Multi-platform App UI"
+                Text="Share clipboard content across devices"
                 Style="{StaticResource SubHeadline}"
-                SemanticProperties.HeadingLevel="Level2"
-                SemanticProperties.Description="Welcome to dot net Multi platform App U I" />
+                HorizontalOptions="Center"
+                SemanticProperties.HeadingLevel="Level2" />
+        </StackLayout>
 
-            <Button
+        <!-- Send Button -->
+        <Button Grid.Row="1"
                 Text="Send Clipboard" 
+                Margin="30,10"
                 HorizontalOptions="Fill" 
                 Command="{Binding SendClipboardCommand}"/>
-            
-        </VerticalStackLayout>
-    </ScrollView>
+
+        <!-- Clipboard History List -->
+        <Grid Grid.Row="2" Margin="20,10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <!-- History Header -->
+            <Label Grid.Row="0"
+                   Text="Clipboard History"
+                   FontSize="18"
+                   FontAttributes="Bold"
+                   Margin="10,0,0,10"
+                   TextColor="{StaticResource Primary}" />
+
+            <!-- History List -->
+            <CollectionView Grid.Row="1"
+                            ItemsSource="{Binding History}"
+                            BackgroundColor="Transparent"
+                            SelectionMode="Single"
+                            SelectionChanged="OnHistoryItemSelected">
+                
+                <CollectionView.EmptyView>
+                    <ContentView>
+                        <StackLayout HorizontalOptions="Center" VerticalOptions="Center" Padding="20">
+                            <Label Text="📋" 
+                                   FontSize="48" 
+                                   HorizontalOptions="Center"
+                                   Opacity="0.5" />
+                            <Label Text="No clipboard history yet"
+                                   FontSize="16"
+                                   TextColor="{StaticResource Gray600}"
+                                   HorizontalOptions="Center" />
+                            <Label Text="Use 'Send Clipboard' to start sharing"
+                                   FontSize="14"
+                                   TextColor="{StaticResource Gray500}"
+                                   HorizontalOptions="Center" />
+                        </StackLayout>
+                    </ContentView>
+                </CollectionView.EmptyView>
+                
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="x:String">
+                        <Border BackgroundColor="{StaticResource Gray100}"
+                                StrokeShape="RoundRectangle 8"
+                                Margin="5,2"
+                                Padding="15,10">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+
+                                <!-- Text Content -->
+                                <Label Grid.Column="0"
+                                       Text="{Binding .}"
+                                       FontSize="14"
+                                       LineBreakMode="TailTruncation"
+                                       MaxLines="3"
+                                       VerticalOptions="Center"
+                                       TextColor="{StaticResource Gray900}" />
+
+                                <!-- Copy Icon -->
+                                <Button Grid.Column="1"
+                                        Text="📋"
+                                        FontSize="16"
+                                        BackgroundColor="Transparent"
+                                        TextColor="{StaticResource Primary}"
+                                        WidthRequest="40"
+                                        HeightRequest="40"
+                                        CornerRadius="20"
+                                        Clicked="OnCopyToClipboard"
+                                        CommandParameter="{Binding .}" />
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </Grid>
+    </Grid>
 
 </ContentPage>

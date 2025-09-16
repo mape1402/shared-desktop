@@ -23,7 +23,7 @@ namespace SharedDesktop.Client
             builder.Services.AddSingleton(sp =>
             {
                 var connection  = new HubConnectionBuilder()
-                    .WithUrl("http://localhost:9001/realtime/synchronization")
+                    .WithUrl("http://192.168.68.101:9001/realtime/synchronization")
                     .WithAutomaticReconnect()
                     .Build();
 
